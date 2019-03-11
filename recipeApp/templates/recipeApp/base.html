@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {%load static %}
+    <link rel="stylesheet" href="{% static 'recipeApp/css/base.css' %}">
+</head>
+<body>
+<header>Welcome to my Recipe page</header>
+{%if user.is_authenticated %}
+<h1>Welcome {{user.username}}</h1>
+<a href="{% url 'index' %}">Home</a>
+<a href="{% url 'profilePage'  %}">Profile</a>
+<a href="{% url 'newRecipies' %}">Create a new Recipe</a>
+<a href="{% url 'allRecipies' %}">See all recipies by all users</a>
+{% block body %}
+{% endblock body %}
+{% else %}
+
+<a href="{% url 'login' %}">Click to login</a>
+<a href="{% url 'createUser' %}">Click to create a new an account</a>
+
+{% endif %}
+
+
+<a></a>
+<a></a>
+
+
+</body>
+</html>

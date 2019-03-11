@@ -1,0 +1,13 @@
+.smaller
+{
+    height:100px;
+    width:100px;
+}
+body{
+    background-color: green;
+}
+
+.test
+{
+    color: yellow;
+}

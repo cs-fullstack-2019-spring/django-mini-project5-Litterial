@@ -1,0 +1,12 @@
+{% extends 'recipeApp/base.html' %}
+{% load static %}
+
+{% block body %}
+{% for x in userProfile %}
+<br>
+<img class='smaller' src= '{{x.picture}}'><br>
+{{x.name}}<br>
+{{x.email}}<br>
+<a href="{% url 'editProfile' x.id %}">Edit profile</a><br>
+{% endfor %}
+{% endblock body%}

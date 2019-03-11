@@ -1,0 +1,16 @@
+{% extends 'recipeApp/base.html' %}
+{%load static %}
+{% block body %}
+{% if currentRecipies %}
+{% for x in currentRecipies %}
+<br>
+<img class='smaller' src="{{x.picture}}"> <br>
+{{x.meal_name}}<br>
+{{x.description}}<br>
+{{x.date_created}}<br>
+{{x.creator}}<br>
+{% endfor %}
+{% else %}
+<div>No recipies</div>
+{% endif %}
+{% endblock body %}
