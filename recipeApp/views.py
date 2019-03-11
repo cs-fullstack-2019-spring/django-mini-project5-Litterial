@@ -103,7 +103,7 @@ def editRecipie(request,ID): #edit recipie
     differentRecipie=RecipieInfoForm(instance=recipieSteps) #grabs instance of recipie
 
     if request.method =="POST":
-        differentRecipie=RecipieInfoForm(request.POST) #fills in info in form
+        differentRecipie=RecipieInfoForm(request.POST,instance=recipieSteps) #fills in info in form
         if differentRecipie.is_valid(): #if valid
             differentRecipie.save() #saves
             return redirect('index') #redirects to index
