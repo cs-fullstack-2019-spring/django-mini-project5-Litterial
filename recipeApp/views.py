@@ -4,21 +4,19 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def index(request): #goes to home page
-    if request.user.is_authenticated:
-        current_user= NewUser.objects.get(username=request.user)
-        current_recipies=RecipieInfo.objects.filter(keytoNewUser=current_user)
-        # current_recipies = RecipieInfo.objects.all()
-        print(current_recipies)
+    if request.user.is_authenticated: #if user is logged in
+        current_user= NewUser.objects.get(username=request.user) #gets the username
+        current_recipies=RecipieInfo.objects.filter(keytoNewUser=current_user) #filters all recipies with that user
         context={
             'currentRecipies':current_recipies,
         }
-        return render(request,'recipeApp/index.html',context)
-    else:
+        return render(request,'recipeApp/index.html',context)  #renders to index with user
+    else:   #otherwise
         current_recipies=''
         context={
             'currentRecipies':current_recipies,
         }
-        return render(request,'recipeApp/index.html',context)
+        return render(request,'recipeApp/index.html',context) #send this blank because the index is expecting this variable
 
 def createUser(request):  #allows user to create account
     blankUser=NewUserForm(request.POST or None)   #get request
@@ -64,52 +62,59 @@ def newRecipies(request,): #allows user to create a recipe
         'form':recipie,
     }
     return render(request,'recipeApp/newRecipies.html',context) #sends back a blank form to the page    return render(request,'recipeApp/newRecipies.html')
-def profilePage(request):
-    userProfile=NewUser.objects.filter(username=request.user)
-    return render(request,'recipeApp/profilePage.html',{'userProfile':userProfile})
 
-def editProfile(request,ID):
-    oldProfile=get_object_or_404(NewUser,pk=ID)
-    newProfile=changeProfile(request.POST,instance=oldProfile)
-    if request.method=='POST':
-        newProfile=NewUserForm(request.POST,instance=oldProfile)
-        if newProfile.is_valid():
-            newProfile.save()
-            return redirect('profilePage')
-        else:
-            newProfile=NewUserForm(request.POST)
+def profilePage(request): #allows user to view profile page
+    userProfile=NewUser.objects.filter(username=request.user) #filters users by username
+    return render(request,'recipeApp/profilePage.html',{'userProfile':userProfile}) #renders on profile page with info
+
+def editProfile(request,ID): #edit profile page
+    oldProfile=get_object_or_404(NewUser,pk=ID) #gets the ID of the user
+    newProfile = changeProfile(instance=oldProfile) #grabs saved information from NewUser
+    if request.method=='POST':   # if post
+        newProfile=changeProfile(request.POST)  #fills information in the form
+        if newProfile.is_valid(): #if valid
+            newProfile.save() #save info
+            return redirect('profilePage')  #redirect to profile page
+        else: #else
+            print(newProfile.errors)
+            print(newProfile.non_field_errors)
+            newProfile2=changeProfile(request.POST)
             context={
-                'newProfile':newProfile,
+                'newProfile':newProfile2,
                 'errors':newProfile.errors,
             }
-            return render(request,'recipeApp/editProfile.html',context)
+
+            return render(request,'recipeApp/editProfile.html',context) #returns back to page with errors
     context={
             'newProfile':newProfile,
         }
-    return render(request,'recipeApp/editProfile.html',context)
+    return render(request,'recipeApp/editProfile.html',context) #rendets on edit profile page
 
 
-def details(request,ID):
-        recipieSteps=get_object_or_404(RecipieInfo,pk=ID)
-        current_recipies=RecipieInfo.objects.filter(id=ID)
-        return render(request,'recipeApp/details.html',{'currentRecipies':current_recipies})
+def details(request,ID): #gets details of recipies
+        recipieSteps=get_object_or_404(RecipieInfo,pk=ID) #grabs the id of the recipie
+        print(recipieSteps)
+        current_recipies=RecipieInfo.objects.filter(id=ID) #grabs the recipie that matches the id
+        print(current_recipies)
+        return render(request,'recipeApp/details.html',{'currentRecipies':current_recipies}) #renders to details
 
-def editRecipie(request,ID):
-    recipieSteps=get_object_or_404(RecipieInfo,pk=ID)
-    differentRecipie=RecipieInfoForm(request.POST or None,instance=recipieSteps)
+def editRecipie(request,ID): #edit recipie
+    recipieSteps=get_object_or_404(RecipieInfo,pk=ID) #gets id of recipie
+    differentRecipie=RecipieInfoForm(instance=recipieSteps) #grabs instance of recipie
 
     if request.method =="POST":
-        if differentRecipie.is_valid():
-            differentRecipie.save()
-            return redirect('index')
+        differentRecipie=RecipieInfoForm(request.POST) #fills in info in form
+        if differentRecipie.is_valid(): #if valid
+            differentRecipie.save() #saves
+            return redirect('index') #redirects to index
         else:
             differentRecipie=RecipieInfoForm(request.POST)
             context={
                     'form':differentRecipie,
                     'errors':differentRecipie.errors,
                 }
-            print('hi')
-            return render(request,'recipeApp/editRecipie.html',context)
+
+            return render(request,'recipeApp/editRecipie.html',context) #list errors on page if there are issues
     context={
             'form':differentRecipie,
         }

@@ -12,6 +12,9 @@ class NewUser(models.Model):
     picture=models.CharField(max_length=200)
     userTableForeignKey=models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
 
+    def __str__(self):
+        return self.username
+
 
 class RecipieInfo(models.Model):
     picture=models.CharField(max_length=200)
@@ -22,3 +25,6 @@ class RecipieInfo(models.Model):
     date_created=models.DateField()
     creator=models.CharField(max_length=200)
     keytoNewUser=models.ForeignKey(NewUser,on_delete=models.CASCADE,blank=True,null=True)
+
+    def __str__(self):
+        return self.meal_name
