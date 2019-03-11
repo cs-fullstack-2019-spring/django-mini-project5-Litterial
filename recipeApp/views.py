@@ -87,10 +87,7 @@ def editProfile(request,ID):
     return render(request,'recipeApp/editProfile.html',context)
 
 
-def details(request):
-    current_user= NewUser.objects.get(username=request.user)
-    current_recipies=RecipieInfo.objects.filter(keytoNewUser=current_user)
-    context={
-        'currentRecipies':current_recipies,
-    }
-    return render(request,'recipeApp/details.html',context)
+def details(request,ID):
+        recipieSteps=get_object_or_404(RecipieInfo,pk=ID)
+        current_recipies=RecipieInfo.objects.filter(id=ID)
+        return render(request,'recipeApp/details.html',{'currentRecipies':current_recipies})

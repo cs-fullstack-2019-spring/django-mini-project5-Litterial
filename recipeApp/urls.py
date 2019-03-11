@@ -7,6 +7,7 @@ urlpatterns=[
     path('newRecipies/',views.newRecipies,name='newRecipies'),
     path('profilePage/',views.profilePage,name='profilePage'),
     path('editProfile/<int:ID>/',views.editProfile,name='editProfile'),
-    path('details/',views.details,name='details'),
+    path('details/<int:ID>/',views.details,name='details'),
+    path('editRecipie/<int:ID)
 
 ]
