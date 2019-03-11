@@ -5,11 +5,11 @@
 {% for x in currentRecipies %}
 <br>
 <img class='smaller' src="{{x.picture}}"> <br>
-<a href="{% url 'details' x.id%}">{{x.meal_name}}</a><br>
+<a href="{% url 'details' x.id %}">{{x.meal_name}}</a><br>
 {{x.description}}<br>
 {{x.date_created}}<br>
 {{x.creator}}<br>
-<a href="{% 'editRecipie' x.id %}">Edit Recipie</a>
+<a href="{% url 'editRecipie' x.id %}">Edit Recipie</a>
 {% endfor %}
 {% else %}
 <div>No recipies</div>

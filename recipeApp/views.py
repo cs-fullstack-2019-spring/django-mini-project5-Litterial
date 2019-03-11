@@ -41,7 +41,9 @@ def createUser(request):  #allows user to create account
     return render(request,'recipeApp/createUser.html',context) #sends back a blank form to the page
 
 def allRecipies(request):
-    return render(request,'recipeApp/allRecipies.html')
+    recipie_list=RecipieInfo.objects.all()
+
+    return render(request,'recipeApp/allRecipies.html',{'list':recipie_list},)
 
 def newRecipies(request,): #allows user to create a recipe
     recipie=RecipieInfoForm(request.POST or None)   #get request
@@ -91,3 +93,29 @@ def details(request,ID):
         recipieSteps=get_object_or_404(RecipieInfo,pk=ID)
         current_recipies=RecipieInfo.objects.filter(id=ID)
         return render(request,'recipeApp/details.html',{'currentRecipies':current_recipies})
+
+def editRecipie(request,ID):
+    recipieSteps=get_object_or_404(RecipieInfo,pk=ID)
+    differentRecipie=RecipieInfoForm(request.POST or None,instance=recipieSteps)
+
+    if request.method =="POST":
+        if differentRecipie.is_valid():
+            differentRecipie.save()
+            return redirect('index')
+        else:
+            differentRecipie=RecipieInfoForm(request.POST)
+            context={
+                    'form':differentRecipie,
+                    'errors':differentRecipie.errors,
+                }
+            print('hi')
+            return render(request,'recipeApp/editRecipie.html',context)
+    context={
+            'form':differentRecipie,
+        }
+    return render(request,'recipeApp/editRecipie.html',context)
+
+
+
+
+

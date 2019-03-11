@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'recipeApp/base.html' %}
+{%load static %}
+{% block body %}
+{% if list%}
+{% for x in list %}
+<br>
+<img class='smaller' src="{{x.picture}}"> <br>
+<a href="{% url 'details' x.id %}">{{x.meal_name}}</a><br>
+{{x.description}}<br>
+{{x.date_created}}<br>
+{{x.creator}}<br>
+{% endfor %}
+{% else %}
+<div>No recipies</div>
+{% endif %}
+{% endblock body %}

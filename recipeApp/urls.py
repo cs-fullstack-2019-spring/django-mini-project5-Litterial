@@ -8,6 +8,6 @@ urlpatterns=[
     path('profilePage/',views.profilePage,name='profilePage'),
     path('editProfile/<int:ID>/',views.editProfile,name='editProfile'),
     path('details/<int:ID>/',views.details,name='details'),
-    path('editRecipie/<int:ID)
+    path('editRecipie/<int:ID>/',views.editRecipie,name='editRecipie'),
 
 ]
